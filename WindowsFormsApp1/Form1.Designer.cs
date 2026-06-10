@@ -39,6 +39,7 @@
             this.txtNomeServico = new System.Windows.Forms.TextBox();
             this.txtPreco = new System.Windows.Forms.TextBox();
             this.lstServicos = new System.Windows.Forms.ListBox();
+            this.lstOrcamentos = new System.Windows.Forms.ListBox();
             this.btnCadastrarServico = new System.Windows.Forms.Button();
             this.cboCliente = new System.Windows.Forms.ComboBox();
             this.cboServico = new System.Windows.Forms.ComboBox();
@@ -46,6 +47,9 @@
             this.lstItens = new System.Windows.Forms.ListBox();
             this.btnAdicionarItem = new System.Windows.Forms.Button();
             this.btnSalvarOrcamento = new System.Windows.Forms.Button();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.btnAprovar = new System.Windows.Forms.Button();
+            this.btnReprovar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numQuantidade)).BeginInit();
             this.SuspendLayout();
             // 
@@ -129,7 +133,7 @@
             // txtNomeServico
             // 
             this.txtNomeServico.Location = new System.Drawing.Point(299, 57);
-            this.txtNomeServico.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtNomeServico.Margin = new System.Windows.Forms.Padding(4);
             this.txtNomeServico.Name = "txtNomeServico";
             this.txtNomeServico.Size = new System.Drawing.Size(132, 22);
             this.txtNomeServico.TabIndex = 8;
@@ -137,7 +141,7 @@
             // txtPreco
             // 
             this.txtPreco.Location = new System.Drawing.Point(299, 153);
-            this.txtPreco.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtPreco.Margin = new System.Windows.Forms.Padding(4);
             this.txtPreco.Name = "txtPreco";
             this.txtPreco.Size = new System.Drawing.Size(132, 22);
             this.txtPreco.TabIndex = 9;
@@ -147,15 +151,25 @@
             this.lstServicos.FormattingEnabled = true;
             this.lstServicos.ItemHeight = 16;
             this.lstServicos.Location = new System.Drawing.Point(303, 286);
-            this.lstServicos.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lstServicos.Margin = new System.Windows.Forms.Padding(4);
             this.lstServicos.Name = "lstServicos";
             this.lstServicos.Size = new System.Drawing.Size(128, 100);
             this.lstServicos.TabIndex = 10;
             // 
+            // lstOrcamentos
+            // 
+            this.lstOrcamentos.FormattingEnabled = true;
+            this.lstOrcamentos.ItemHeight = 16;
+            this.lstOrcamentos.Location = new System.Drawing.Point(793, 57);
+            this.lstOrcamentos.Margin = new System.Windows.Forms.Padding(4);
+            this.lstOrcamentos.Name = "lstOrcamentos";
+            this.lstOrcamentos.Size = new System.Drawing.Size(420, 84);
+            this.lstOrcamentos.TabIndex = 18;
+            // 
             // btnCadastrarServico
             // 
             this.btnCadastrarServico.Location = new System.Drawing.Point(299, 215);
-            this.btnCadastrarServico.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnCadastrarServico.Margin = new System.Windows.Forms.Padding(4);
             this.btnCadastrarServico.Name = "btnCadastrarServico";
             this.btnCadastrarServico.Size = new System.Drawing.Size(100, 28);
             this.btnCadastrarServico.TabIndex = 11;
@@ -167,7 +181,7 @@
             // 
             this.cboCliente.FormattingEnabled = true;
             this.cboCliente.Location = new System.Drawing.Point(543, 55);
-            this.cboCliente.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboCliente.Margin = new System.Windows.Forms.Padding(4);
             this.cboCliente.Name = "cboCliente";
             this.cboCliente.Size = new System.Drawing.Size(160, 24);
             this.cboCliente.TabIndex = 12;
@@ -176,7 +190,7 @@
             // 
             this.cboServico.FormattingEnabled = true;
             this.cboServico.Location = new System.Drawing.Point(543, 106);
-            this.cboServico.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cboServico.Margin = new System.Windows.Forms.Padding(4);
             this.cboServico.Name = "cboServico";
             this.cboServico.Size = new System.Drawing.Size(160, 24);
             this.cboServico.TabIndex = 13;
@@ -184,7 +198,7 @@
             // numQuantidade
             // 
             this.numQuantidade.Location = new System.Drawing.Point(543, 153);
-            this.numQuantidade.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.numQuantidade.Margin = new System.Windows.Forms.Padding(4);
             this.numQuantidade.Name = "numQuantidade";
             this.numQuantidade.Size = new System.Drawing.Size(160, 22);
             this.numQuantidade.TabIndex = 14;
@@ -194,7 +208,7 @@
             this.lstItens.FormattingEnabled = true;
             this.lstItens.ItemHeight = 16;
             this.lstItens.Location = new System.Drawing.Point(543, 215);
-            this.lstItens.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.lstItens.Margin = new System.Windows.Forms.Padding(4);
             this.lstItens.Name = "lstItens";
             this.lstItens.Size = new System.Drawing.Size(159, 116);
             this.lstItens.TabIndex = 15;
@@ -202,7 +216,7 @@
             // btnAdicionarItem
             // 
             this.btnAdicionarItem.Location = new System.Drawing.Point(516, 353);
-            this.btnAdicionarItem.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAdicionarItem.Margin = new System.Windows.Forms.Padding(4);
             this.btnAdicionarItem.Name = "btnAdicionarItem";
             this.btnAdicionarItem.Size = new System.Drawing.Size(100, 28);
             this.btnAdicionarItem.TabIndex = 16;
@@ -213,7 +227,7 @@
             // btnSalvarOrcamento
             // 
             this.btnSalvarOrcamento.Location = new System.Drawing.Point(645, 353);
-            this.btnSalvarOrcamento.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnSalvarOrcamento.Margin = new System.Windows.Forms.Padding(4);
             this.btnSalvarOrcamento.Name = "btnSalvarOrcamento";
             this.btnSalvarOrcamento.Size = new System.Drawing.Size(100, 28);
             this.btnSalvarOrcamento.TabIndex = 17;
@@ -221,11 +235,45 @@
             this.btnSalvarOrcamento.UseVisualStyleBackColor = true;
             this.btnSalvarOrcamento.Click += new System.EventHandler(this.btnSalvarOrcamento_Click);
             // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 16;
+            this.listBox1.Location = new System.Drawing.Point(880, 241);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(234, 180);
+            this.listBox1.TabIndex = 18;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged_1);
+            // 
+            // btnAprovar
+            // 
+            this.btnAprovar.Location = new System.Drawing.Point(850, 153);
+            this.btnAprovar.Name = "btnAprovar";
+            this.btnAprovar.Size = new System.Drawing.Size(100, 28);
+            this.btnAprovar.TabIndex = 19;
+            this.btnAprovar.Text = "Aprovar";
+            this.btnAprovar.UseVisualStyleBackColor = true;
+            this.btnAprovar.Click += new System.EventHandler(this.btnAprovar_Click);
+            // 
+            // btnReprovar
+            // 
+            this.btnReprovar.Location = new System.Drawing.Point(1049, 153);
+            this.btnReprovar.Name = "btnReprovar";
+            this.btnReprovar.Size = new System.Drawing.Size(100, 28);
+            this.btnReprovar.TabIndex = 20;
+            this.btnReprovar.Text = "Reprovar";
+            this.btnReprovar.UseVisualStyleBackColor = true;
+            this.btnReprovar.Click += new System.EventHandler(this.btnReprovar_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(791, 450);
+            this.ClientSize = new System.Drawing.Size(1226, 496);
+            this.Controls.Add(this.btnReprovar);
+            this.Controls.Add(this.btnAprovar);
+            this.Controls.Add(this.lstOrcamentos);
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.btnSalvarOrcamento);
             this.Controls.Add(this.btnAdicionarItem);
             this.Controls.Add(this.lstItens);
@@ -274,6 +322,10 @@
         private System.Windows.Forms.ListBox lstItens;
         private System.Windows.Forms.Button btnAdicionarItem;
         private System.Windows.Forms.Button btnSalvarOrcamento;
+        private System.Windows.Forms.ListBox lstOrcamentos;
+        private System.Windows.Forms.Button btnAprovar;
+        private System.Windows.Forms.Button btnReprovar;
+        private System.Windows.Forms.ListBox listBox1;
     }
 }
 

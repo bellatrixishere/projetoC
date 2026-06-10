@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp1.Modelos;
 
+
 namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
@@ -57,14 +58,19 @@ namespace WindowsFormsApp1
             Servico servico = new Servico();
 
             servico.Nome = txtNomeServico.Text;
-            servico.Preco = txtPreco.Text != "" ? decimal.Parse(txtPreco.Text) : 0;
+            decimal preco;
+            if (!decimal.TryParse(txtPreco.Text, out preco))
+            {
+                MessageBox.Show("Preço inválido. Use número, ex: 120.50");
+                return;
+            }
+            servico.Preco = preco;
 
             Dados.Servicos.Add(servico);
 
+            // lstServicos é redundante quando usamos DataSource; atualiza a lista diretamente
+            // Mantemos para compatibilidade visual
             lstServicos.Items.Add(servico);
-            // Atualiza o DataSource do ComboBox para refletir a alteração
-            cboServico.DataSource = null;
-            cboServico.DataSource = Dados.Servicos;
             if (cboServico.Items.Count > 0)
                 cboServico.SelectedIndex = 0;
 
@@ -73,10 +79,10 @@ namespace WindowsFormsApp1
 
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
 
-            // Vincula diretamente às listas em Dados para refletir alterações posteriores
+        private void Form1_Load(object sender, EventArgs e)
+        { 
+        // Vincula diretamente às listas em Dados para refletir alterações posteriores
             cboCliente.DataSource = Dados.Clientes;
             cboServico.DataSource = Dados.Servicos;
         }
@@ -120,14 +126,54 @@ namespace WindowsFormsApp1
 
             Dados.Orcamentos.Add(orcamento);
 
-            MessageBox.Show("Total: R$ " + orcamento.Total());
+            MessageBox.Show("Total: " + orcamento.Total().ToString("C"));
 
             // Limpa estado da edição atual
             itensOrcamento.Clear();
             lstItens.Items.Clear();
+            // Atualiza lista de orçamentos exibida
+            lstOrcamentos.DataSource = null;
+            lstOrcamentos.DataSource = Dados.Orcamentos;
+        }
+
+        private void btnAprovar_Click(object sender, EventArgs e)
+        {
+            var orc = lstOrcamentos.SelectedItem as Orcamento;
+            if (orc == null)
+            {
+                MessageBox.Show("Selecione um orçamento para aprovar.");
+                return;
+            }
+
+            orc.Status = "Aprovado";
+            orc.NumeroPedido = new Random().Next(1000, 9999);
+
+            // Forçar atualização do DataSource
+            lstOrcamentos.DataSource = null;
+            lstOrcamentos.DataSource = Dados.Orcamentos;
+        }
+
+        private void btnReprovar_Click(object sender, EventArgs e)
+        {
+            var orc = lstOrcamentos.SelectedItem as Orcamento;
+            if (orc == null)
+            {
+                MessageBox.Show("Selecione um orçamento para reprovar.");
+                return;
+            }
+
+            orc.Status = "Rejeitado";
+
+            lstOrcamentos.DataSource = null;
+            lstOrcamentos.DataSource = Dados.Orcamentos;
         }
 
         private void txtNomeServico_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBox1_SelectedIndexChanged_1(object sender, EventArgs e)
         {
 
         }
