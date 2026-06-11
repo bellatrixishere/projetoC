@@ -85,6 +85,14 @@ namespace WindowsFormsApp1
         // Vincula diretamente às listas em Dados para refletir alterações posteriores
             cboCliente.DataSource = Dados.Clientes;
             cboServico.DataSource = Dados.Servicos;
+
+            cboMotivos.Items.Add("Preço muito alto");
+            cboMotivos.Items.Add("Cliente desistiu");
+            cboMotivos.Items.Add("Prazo incompatível");
+            cboMotivos.Items.Add("Concorrente escolhido");
+
+            if (cboMotivos.Items.Count > 0)
+                cboMotivos.SelectedIndex = 0;
         }
 
         private void btnAdicionarItem_Click(object sender, EventArgs e)
@@ -156,13 +164,13 @@ namespace WindowsFormsApp1
         private void btnReprovar_Click(object sender, EventArgs e)
         {
             var orc = lstOrcamentos.SelectedItem as Orcamento;
+
             if (orc == null)
-            {
-                MessageBox.Show("Selecione um orçamento para reprovar.");
                 return;
-            }
 
             orc.Status = "Rejeitado";
+
+            orc.MotivoRejeicao = cboMotivos.Text;
 
             lstOrcamentos.DataSource = null;
             lstOrcamentos.DataSource = Dados.Orcamentos;
@@ -174,6 +182,11 @@ namespace WindowsFormsApp1
         }
 
         private void listBox1_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

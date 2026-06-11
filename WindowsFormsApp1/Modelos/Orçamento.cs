@@ -22,18 +22,25 @@ namespace WindowsFormsApp1.Modelos
 
         public override string ToString()
         {
-            var totalFormatado = Total().ToString("C");
             if (Status == "Aprovado")
             {
-                return $"{Cliente?.Nome} - {Status} - Pedido #{NumeroPedido} - {totalFormatado}";
+                return Cliente.Nome +
+                       " | Aprovado" +
+                       " | Pedido #" + NumeroPedido +
+                       " | Total: " + Total().ToString("C");
             }
 
             if (Status == "Rejeitado")
             {
-                return $"{Cliente?.Nome} - {Status} - {totalFormatado}";
+                return Cliente.Nome +
+                       " | Rejeitado" +
+                       " | Motivo: " + MotivoRejeicao +
+                       " | Total: " + Total().ToString("C");
             }
 
-            return $"{Cliente?.Nome} - {Status} - {totalFormatado}";
+            return Cliente.Nome +
+                   " | Pendente" +
+                   " | Total: " + Total().ToString("C");
         }
     }
 }
