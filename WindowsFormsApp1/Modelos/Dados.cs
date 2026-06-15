@@ -21,5 +21,8 @@ namespace WindowsFormsApp1.Modelos
         };
 
         public static BindingList<Orcamento> Orcamentos = new BindingList<Orcamento>();
+
+
+        public static int ProximoPedido = 1;
     }
 }

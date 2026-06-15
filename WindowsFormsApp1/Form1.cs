@@ -154,7 +154,7 @@ namespace WindowsFormsApp1
             }
 
             orc.Status = "Aprovado";
-            orc.NumeroPedido = new Random().Next(1000, 9999);
+            orc.NumeroPedido = Dados.ProximoPedido++;
 
             // Forçar atualização do DataSource
             lstOrcamentos.DataSource = null;
@@ -187,6 +187,11 @@ namespace WindowsFormsApp1
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lstOrcamentos_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
