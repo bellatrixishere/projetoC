@@ -8,7 +8,10 @@ namespace WindowsFormsApp1.Modelos
 {
     public class Cliente
     {
+        public int Id { get; set; }
+
         public string Nome { get; set; }
+
         public string Contato { get; set; }
 
         public override string ToString()

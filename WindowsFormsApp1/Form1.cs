@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using WindowsFormsApp1.Modelos;
+using WindowsFormsApp1.Repositories;
 
 namespace WindowsFormsApp1
 {
@@ -69,7 +70,10 @@ namespace WindowsFormsApp1
             cliente.Nome = txtNome.Text;
             cliente.Contato = txtContato.Text;
 
-            Dados.Clientes.Add(cliente);
+            ClienteRepository repo =
+               new ClienteRepository();
+
+            repo.Inserir(cliente);
 
             AtualizarListas();
 
