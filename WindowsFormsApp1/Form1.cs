@@ -29,6 +29,17 @@ namespace WindowsFormsApp1
 
             if (cboMotivos.Items.Count > 0)
                 cboMotivos.SelectedIndex = 0;
+
+            ClienteRepository repo = new ClienteRepository();
+
+            Dados.Clientes.Clear();
+
+            foreach (Cliente cliente in repo.Listar())
+            {
+                Dados.Clientes.Add(cliente);
+            }
+
+            AtualizarListas();
         }
 
         private void AtualizarListas()
