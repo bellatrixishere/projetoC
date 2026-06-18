@@ -1,90 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp1.Modelos;
-
 
 namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
     {
-        // Lista de itens do orçamento atual (persistente durante a edição do orçamento)
-        private List<ItemOrcamento> itensOrcamento = new List<ItemOrcamento>();
+        private List<ItemOrcamento> itensOrcamento =
+            new List<ItemOrcamento>();
 
         public Form1()
         {
             InitializeComponent();
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnCadastrar_Click(object sender, EventArgs e)
-        {
-            Cliente cliente = new Cliente();
-
-            cliente.Nome = txtNome.Text;
-            cliente.Contato = txtContato.Text;
-
-            Dados.Clientes.Add(cliente);
-
-            lstClientes.Items.Add(cliente);
-
-            // Atualiza o DataSource do ComboBox para refletir a alteração
-            cboCliente.DataSource = null;
-            cboCliente.DataSource = Dados.Clientes;
-            if (cboCliente.Items.Count > 0)
-                cboCliente.SelectedIndex = 0;
-
-            txtNome.Clear();
-            txtContato.Clear();
-        }
-
-        private void btnCadastrarServico_Click(object sender, EventArgs e)
-        {
-            Servico servico = new Servico();
-
-            servico.Nome = txtNomeServico.Text;
-            decimal preco;
-            if (!decimal.TryParse(txtPreco.Text, out preco))
-            {
-                MessageBox.Show("Preço inválido. Use número, ex: 120.50");
-                return;
-            }
-            servico.Preco = preco;
-
-            Dados.Servicos.Add(servico);
-
-            // lstServicos é redundante quando usamos DataSource; atualiza a lista diretamente
-            // Mantemos para compatibilidade visual
-            lstServicos.Items.Add(servico);
-            if (cboServico.Items.Count > 0)
-                cboServico.SelectedIndex = 0;
-
-            txtNomeServico.Clear();
-            txtPreco.Clear();
-
-        }
-
-
         private void Form1_Load(object sender, EventArgs e)
-        { 
-        // Vincula diretamente às listas em Dados para refletir alterações posteriores
-            cboCliente.DataSource = Dados.Clientes;
-            cboServico.DataSource = Dados.Servicos;
+        {
+            AtualizarListas();
+
+            cboMotivos.Items.Clear();
 
             cboMotivos.Items.Add("Preço muito alto");
             cboMotivos.Items.Add("Cliente desistiu");
@@ -95,105 +30,396 @@ namespace WindowsFormsApp1
                 cboMotivos.SelectedIndex = 0;
         }
 
-        private void btnAdicionarItem_Click(object sender, EventArgs e)
+        private void AtualizarListas()
         {
-            var servico = cboServico.SelectedItem as Servico;
+            lstClientes.DataSource = null;
+            lstClientes.DataSource = Dados.Clientes;
+
+            lstServicos.DataSource = null;
+            lstServicos.DataSource = Dados.Servicos;
+
+            lstOrcamentos.DataSource = null;
+            lstOrcamentos.DataSource = Dados.Orcamentos;
+
+            cboCliente.DataSource = null;
+            cboCliente.DataSource = Dados.Clientes;
+
+            cboServico.DataSource = null;
+            cboServico.DataSource = Dados.Servicos;
+        }
+
+        //---------------------------------
+        // CLIENTE
+        //---------------------------------
+
+        private void btnCadastrar_Click(object sender, EventArgs e)
+        {
+            if (
+                string.IsNullOrWhiteSpace(txtNome.Text)
+                ||
+                string.IsNullOrWhiteSpace(txtContato.Text)
+            )
+            {
+                MessageBox.Show("Preencha todos os campos.");
+                return;
+            }
+
+            Cliente cliente = new Cliente();
+
+            cliente.Nome = txtNome.Text;
+            cliente.Contato = txtContato.Text;
+
+            Dados.Clientes.Add(cliente);
+
+            AtualizarListas();
+
+            txtNome.Clear();
+            txtContato.Clear();
+
+            MessageBox.Show("Cliente cadastrado.");
+        }
+
+        private void EditarCliente_Click(
+            object sender,
+            EventArgs e)
+        {
+            Cliente cliente =
+                lstClientes.SelectedItem as Cliente;
+
+            if (cliente == null)
+            {
+                MessageBox.Show("Selecione um cliente.");
+                return;
+            }
+
+            cliente.Nome = txtNome.Text;
+            cliente.Contato = txtContato.Text;
+
+            AtualizarListas();
+
+            txtNome.Clear();
+            txtContato.Clear();
+
+            MessageBox.Show("Cliente atualizado.");
+        }
+
+        private void Excluir_Click(
+            object sender,
+            EventArgs e)
+        {
+            Cliente cliente =
+                lstClientes.SelectedItem as Cliente;
+
+            if (cliente == null)
+            {
+                MessageBox.Show("Selecione um cliente.");
+                return;
+            }
+
+            Dados.Clientes.Remove(cliente);
+
+            AtualizarListas();
+
+            txtNome.Clear();
+            txtContato.Clear();
+
+            MessageBox.Show("Cliente removido.");
+        }
+
+        private void lstClientes_SelectedIndexChanged(
+            object sender,
+            EventArgs e)
+        {
+            Cliente cliente =
+                lstClientes.SelectedItem as Cliente;
+
+            if (cliente == null)
+                return;
+
+            txtNome.Text =
+                cliente.Nome;
+
+            txtContato.Text =
+                cliente.Contato;
+        }
+
+        //---------------------------------
+        // SERVIÇO
+        //---------------------------------
+
+        private void btnCadastrarServico_Click(
+            object sender,
+            EventArgs e)
+        {
+            decimal preco;
+
+            if (
+                string.IsNullOrWhiteSpace(
+                    txtNomeServico.Text)
+                ||
+                !decimal.TryParse(
+                    txtPreco.Text,
+                    out preco)
+            )
+            {
+                MessageBox.Show(
+                    "Preencha corretamente."
+                );
+                return;
+            }
+
+            Servico servico =
+                new Servico();
+
+            servico.Nome =
+                txtNomeServico.Text;
+
+            servico.Preco =
+                preco;
+
+            Dados.Servicos.Add(
+                servico);
+
+            AtualizarListas();
+
+            txtNomeServico.Clear();
+            txtPreco.Clear();
+
+            MessageBox.Show(
+                "Serviço cadastrado."
+            );
+        }
+
+        private void button2_Click(
+            object sender,
+            EventArgs e)
+        {
+            Servico servico =
+                lstServicos.SelectedItem
+                as Servico;
+
             if (servico == null)
             {
-                MessageBox.Show("Selecione um serviço antes de adicionar.");
+                MessageBox.Show(
+                    "Selecione um serviço."
+                );
                 return;
             }
 
-            ItemOrcamento item = new ItemOrcamento();
-            item.Servico = servico;
-            item.Quantidade = (int)numQuantidade.Value;
+            decimal preco;
 
-            // Adiciona o item à lista do orçamento atual
+            if (
+                !decimal.TryParse(
+                    txtPreco.Text,
+                    out preco)
+            )
+            {
+                MessageBox.Show(
+                    "Preço inválido."
+                );
+                return;
+            }
+
+            servico.Nome =
+                txtNomeServico.Text;
+
+            servico.Preco =
+                preco;
+
+            AtualizarListas();
+
+            MessageBox.Show(
+                "Serviço atualizado."
+            );
+        }
+
+        private void button1_Click(
+            object sender,
+            EventArgs e)
+        {
+            Servico servico =
+                lstServicos.SelectedItem
+                as Servico;
+
+            if (servico == null)
+                return;
+
+            Dados.Servicos.Remove(
+                servico);
+
+            AtualizarListas();
+
+            txtNomeServico.Clear();
+            txtPreco.Clear();
+
+            MessageBox.Show(
+                "Serviço removido."
+            );
+        }
+
+        private void listBox1_SelectedIndexChanged_1(
+            object sender,
+            EventArgs e)
+        {
+            Servico servico =
+                lstServicos.SelectedItem
+                as Servico;
+
+            if (servico == null)
+                return;
+
+            txtNomeServico.Text =
+                servico.Nome;
+
+            txtPreco.Text =
+                servico.Preco.ToString();
+        }
+
+        //---------------------------------
+        // ORÇAMENTO
+        //---------------------------------
+
+        private void btnAdicionarItem_Click(
+            object sender,
+            EventArgs e)
+        {
+            Servico servico =
+                cboServico.SelectedItem
+                as Servico;
+
+            if (servico == null)
+                return;
+
+            ItemOrcamento item =
+                new ItemOrcamento();
+
+            item.Servico =
+                servico;
+
+            item.Quantidade =
+                (int)numQuantidade.Value;
+
             itensOrcamento.Add(item);
 
-            lstItens.Items.Add(item.Servico.Nome + " x " + item.Quantidade);
+            lstItens.Items.Add(
+                $"{item.Servico.Nome} | " +
+                $"Qtd:{item.Quantidade} | " +
+                $"{item.SubTotal():C}"
+            );
         }
 
-        private void btnSalvarOrcamento_Click(object sender, EventArgs e)
+        private void btnSalvarOrcamento_Click(
+            object sender,
+            EventArgs e)
         {
-            if (cboCliente.SelectedItem == null)
+            if (
+                cboCliente.SelectedItem == null
+                ||
+                itensOrcamento.Count == 0
+            )
             {
-                MessageBox.Show("Selecione um cliente antes de salvar o orçamento.");
+                MessageBox.Show(
+                    "Dados incompletos."
+                );
+
                 return;
             }
 
-            if (itensOrcamento.Count == 0)
-            {
-                MessageBox.Show("Adicione pelo menos um item ao orçamento.");
-                return;
-            }
+            Orcamento o =
+                new Orcamento();
 
-            Orcamento orcamento = new Orcamento();
-            orcamento.Cliente = (Cliente)cboCliente.SelectedItem;
-            orcamento.Itens = new List<ItemOrcamento>(itensOrcamento);
+            o.Cliente =
+                (Cliente)cboCliente.SelectedItem;
 
-            Dados.Orcamentos.Add(orcamento);
+            o.Itens =
+                new List<ItemOrcamento>(
+                    itensOrcamento);
 
-            MessageBox.Show("Total: " + orcamento.Total().ToString("C"));
+            Dados.Orcamentos.Add(o);
 
-            // Limpa estado da edição atual
+            MessageBox.Show(
+                $"Total: {o.Total():C}"
+            );
+
             itensOrcamento.Clear();
+
             lstItens.Items.Clear();
-            // Atualiza lista de orçamentos exibida
-            lstOrcamentos.DataSource = null;
-            lstOrcamentos.DataSource = Dados.Orcamentos;
+
+            AtualizarListas();
         }
 
-        private void btnAprovar_Click(object sender, EventArgs e)
+        private void btnAprovar_Click(
+            object sender,
+            EventArgs e)
         {
-            var orc = lstOrcamentos.SelectedItem as Orcamento;
-            if (orc == null)
-            {
-                MessageBox.Show("Selecione um orçamento para aprovar.");
-                return;
-            }
+            Orcamento o =
+                lstOrcamentos.SelectedItem
+                as Orcamento;
 
-            orc.Status = "Aprovado";
-            orc.NumeroPedido = Dados.ProximoPedido++;
-
-            // Forçar atualização do DataSource
-            lstOrcamentos.DataSource = null;
-            lstOrcamentos.DataSource = Dados.Orcamentos;
-        }
-
-        private void btnReprovar_Click(object sender, EventArgs e)
-        {
-            var orc = lstOrcamentos.SelectedItem as Orcamento;
-
-            if (orc == null)
+            if (o == null)
                 return;
 
-            orc.Status = "Rejeitado";
+            o.Status =
+                "Aprovado";
 
-            orc.MotivoRejeicao = cboMotivos.Text;
+            o.NumeroPedido =
+                Dados.ProximoPedido++;
 
-            lstOrcamentos.DataSource = null;
-            lstOrcamentos.DataSource = Dados.Orcamentos;
+            AtualizarListas();
         }
 
-        private void txtNomeServico_TextChanged(object sender, EventArgs e)
+        private void btnReprovar_Click(
+            object sender,
+            EventArgs e)
         {
+            Orcamento o =
+                lstOrcamentos.SelectedItem
+                as Orcamento;
 
+            if (o == null)
+                return;
+
+            o.Status =
+                "Rejeitado";
+
+            o.MotivoRejeicao =
+                cboMotivos.Text;
+
+            AtualizarListas();
         }
 
-        private void listBox1_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
+        //---------------------------------
+        // EVENTOS VAZIOS
+        //---------------------------------
 
+        private void label1_Click(
+            object sender,
+            EventArgs e)
+        {
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void txtNomeServico_TextChanged(
+            object sender,
+            EventArgs e)
         {
-
         }
 
-        private void lstOrcamentos_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBox1_SelectedIndexChanged(
+            object sender,
+            EventArgs e)
         {
+        }
 
+        private void lstOrcamentos_SelectedIndexChanged(
+            object sender,
+            EventArgs e)
+        {
+        }
+
+        private void listBox1_SelectedIndexChanged(
+            object sender,
+            EventArgs e)
+        {
         }
     }
 }
