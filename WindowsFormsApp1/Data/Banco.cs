@@ -16,54 +16,65 @@ namespace WindowsFormsApp1.Data
             {
                 conexao.Open();
 
-                string sql = @"
-                CREATE TABLE IF NOT EXISTS Clientes
-                (
-                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    Nome TEXT NOT NULL,
-                    Contato TEXT NOT NULL
-                );";
+                new SQLiteCommand(@"
+                    CREATE TABLE IF NOT EXISTS Clientes
+                    (
+                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        Nome TEXT NOT NULL,
+                        Contato TEXT NOT NULL
+                    );", conexao).ExecuteNonQuery();
 
-                string sqlServicos = @"
-                CREATE TABLE IF NOT EXISTS Servicos
-                (
-                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    Nome TEXT NOT NULL,
-                    Preco REAL NOT NULL
-                )";
+                new SQLiteCommand(@"
+                    CREATE TABLE IF NOT EXISTS Servicos
+                    (
+                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        Nome TEXT NOT NULL,
+                        Preco REAL NOT NULL
+                    );", conexao).ExecuteNonQuery();
 
-                string sqlOrcamentos = @"
-                CREATE TABLE IF NOT EXISTS Orcamentos
-                (
-                    Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    ClienteId INTEGER NOT NULL,
-                    Status TEXT NOT NULL,
-                    NumeroPedido INTEGER,
-                    MotivoRejeicao TEXT
-                )";
+                new SQLiteCommand(@"
+                    CREATE TABLE IF NOT EXISTS Orcamentos
+                    (
+                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        ClienteId INTEGER NOT NULL,
+                        Status TEXT NOT NULL,
+                        NumeroPedido INTEGER,
+                        MotivoRejeicao TEXT
+                    );", conexao).ExecuteNonQuery();
 
-                string sqlItens = @"
-                CREATE TABLE IF NOT EXISTS ItensOrcamento
-                (
-                Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                OrcamentoId INTEGER NOT NULL,
-                ServicoId INTEGER NOT NULL,
-                Quantidade INTEGER NOT NULL
-                )";
+                new SQLiteCommand(@"
+                    CREATE TABLE IF NOT EXISTS ItensOrcamento
+                    (
+                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        OrcamentoId INTEGER NOT NULL,
+                        ServicoId INTEGER NOT NULL,
+                        Quantidade INTEGER NOT NULL
+                    );", conexao).ExecuteNonQuery();
 
-                new SQLiteCommand(sqlOrcamentos, conexao)
-                    .ExecuteNonQuery();
+                // NOVAS TABELAS
+                new SQLiteCommand(@"
+                    CREATE TABLE IF NOT EXISTS Papeis
+                    (
+                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        Nome TEXT NOT NULL UNIQUE
+                    );", conexao).ExecuteNonQuery();
 
-                new SQLiteCommand(sqlItens, conexao)
-                    .ExecuteNonQuery();
+                new SQLiteCommand(@"
+                    CREATE TABLE IF NOT EXISTS Usuarios
+                    (
+                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        Nome TEXT NOT NULL,
+                        Login TEXT NOT NULL UNIQUE,
+                        SenhaHash TEXT NOT NULL,
+                        PapelId INTEGER NOT NULL,
+                        FOREIGN KEY (PapelId) REFERENCES Papeis(Id)
+                    );", conexao).ExecuteNonQuery();
 
-                new SQLiteCommand(sqlServicos, conexao)
-                .ExecuteNonQuery();
-
-                SQLiteCommand cmd =
-                    new SQLiteCommand(sql, conexao);
-
-                cmd.ExecuteNonQuery();
+                // Insere os 3 papéis fixos se não existirem
+                new SQLiteCommand(@"
+                    INSERT OR IGNORE INTO Papeis (Nome)
+                    VALUES ('Admin'), ('Operador'), ('Visualizador');
+                ", conexao).ExecuteNonQuery();
             }
         }
     }

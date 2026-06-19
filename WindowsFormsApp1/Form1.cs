@@ -13,9 +13,12 @@ namespace WindowsFormsApp1
 
 
 
-        public Form1()
+        private Usuario _usuarioLogado;
+
+        public Form1(Usuario usuarioLogado)
         {
             InitializeComponent();
+            _usuarioLogado = usuarioLogado;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -35,6 +38,8 @@ namespace WindowsFormsApp1
 
             if (cboMotivos.Items.Count > 0)
                 cboMotivos.SelectedIndex = 0;
+
+            AplicarPermissoes(); 
 
             ClienteRepository repo = new ClienteRepository();
 
@@ -85,6 +90,34 @@ namespace WindowsFormsApp1
             {
                 Dados.Orcamentos.Add(orcamento);
             }
+        }
+
+
+
+        private void AplicarPermissoes()
+        {
+            bool podeEditar = _usuarioLogado.Papel.Nome != "Visualizador";
+            bool isAdmin = _usuarioLogado.Papel.Nome == "Admin";
+
+            // Clientes
+            btnCadastrar.Enabled = podeEditar;
+            EditarCliente.Enabled = podeEditar;
+            ExcluirCliente.Enabled = podeEditar;
+
+            // Serviços
+            btnCadastrarServico.Enabled = podeEditar;
+            EditarServico.Enabled = podeEditar;
+            ExcluirServico.Enabled = podeEditar;
+
+            // Orçamentos
+            btnAdicionarItem.Enabled = podeEditar;
+            btnSalvarOrcamento.Enabled = podeEditar;
+            btnAprovar.Enabled = podeEditar;
+            btnReprovar.Enabled = podeEditar;
+            btnExcluirOrcamento.Enabled = podeEditar;
+
+            // Gerenciar usuários — só Admin vê
+            btnGerenciarUsuarios.Visible = isAdmin;
         }
 
         private void AtualizarListas()
@@ -530,6 +563,13 @@ namespace WindowsFormsApp1
             AtualizarListas();
 
             MessageBox.Show("Orçamento excluído.");
+        }
+
+        private void btnGerenciarUsuarios_Click(object sender, EventArgs e)
+        {
+
+            FormUsuarios form = new FormUsuarios(_usuarioLogado);
+            form.ShowDialog();
         }
     }
 }

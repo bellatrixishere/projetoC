@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace WindowsFormsApp1.Modelos
 {
-    internal class Papel
+    public class Papel
     {
+        public int Id { get; set; }
+        public string Nome { get; set; }
+
+        public override string ToString()
+        {
+            return Nome;
+        }
     }
 }

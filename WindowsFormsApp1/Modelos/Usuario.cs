@@ -6,7 +6,17 @@ using System.Threading.Tasks;
 
 namespace WindowsFormsApp1.Modelos
 {
-    internal class Usuarios
+    public class Usuario
     {
+        public int Id { get; set; }
+        public string Nome { get; set; }
+        public string Login { get; set; }
+        public string SenhaHash { get; set; }
+        public Papel Papel { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Nome} ({Papel?.Nome})";
+        }
     }
 }

@@ -55,6 +55,7 @@
             this.ExcluirServico = new System.Windows.Forms.Button();
             this.EditarServico = new System.Windows.Forms.Button();
             this.btnExcluirOrcamento = new System.Windows.Forms.Button();
+            this.btnGerenciarUsuarios = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numQuantidade)).BeginInit();
             this.SuspendLayout();
             // 
@@ -316,11 +317,22 @@
             this.btnExcluirOrcamento.UseVisualStyleBackColor = true;
             this.btnExcluirOrcamento.Click += new System.EventHandler(this.button1_Click_1);
             // 
+            // btnGerenciarUsuarios
+            // 
+            this.btnGerenciarUsuarios.Location = new System.Drawing.Point(688, 247);
+            this.btnGerenciarUsuarios.Name = "btnGerenciarUsuarios";
+            this.btnGerenciarUsuarios.Size = new System.Drawing.Size(156, 23);
+            this.btnGerenciarUsuarios.TabIndex = 30;
+            this.btnGerenciarUsuarios.Text = "Gerenciar Usuários";
+            this.btnGerenciarUsuarios.UseVisualStyleBackColor = true;
+            this.btnGerenciarUsuarios.Click += new System.EventHandler(this.btnGerenciarUsuarios_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(920, 403);
+            this.ClientSize = new System.Drawing.Size(984, 505);
+            this.Controls.Add(this.btnGerenciarUsuarios);
             this.Controls.Add(this.btnExcluirOrcamento);
             this.Controls.Add(this.ExcluirServico);
             this.Controls.Add(this.EditarServico);
@@ -387,6 +399,7 @@
         private System.Windows.Forms.Button ExcluirServico;
         private System.Windows.Forms.Button EditarServico;
         private System.Windows.Forms.Button btnExcluirOrcamento;
+        private System.Windows.Forms.Button btnGerenciarUsuarios;
     }
 }
 
