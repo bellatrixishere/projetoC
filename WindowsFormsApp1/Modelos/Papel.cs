@@ -13,6 +13,7 @@ namespace WindowsFormsApp1.Modelos
 
         public override string ToString()
         {
+            // Exibe o nome do papel em comboboxes
             return Nome;
         }
     }

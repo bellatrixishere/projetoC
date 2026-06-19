@@ -18,6 +18,7 @@ namespace WindowsFormsApp1.Modelos
 
         public override string ToString()
         {
+            // Exibe apenas o nome do serviço em listas
             return Nome;
         }
     }

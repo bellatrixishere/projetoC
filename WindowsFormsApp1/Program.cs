@@ -21,12 +21,15 @@ namespace WindowsFormsApp1
 
                 UsuarioService service = new UsuarioService();
 
+                // Se não existir usuário no banco, cria um admin padrão para permitir primeiro acesso
                 if (!service.ExisteAlgumUsuario())
                 {
                     UsuarioRepository repo = new UsuarioRepository();
 
+                    // Papel Admin padrão
                     Papel papelAdmin = new Papel { Id = 1, Nome = "Admin" };
 
+                    // Usuário admin com senha simples (apenas para primeiro acesso/testes)
                     Usuario admin = new Usuario
                     {
                         Nome = "Administrador",
@@ -37,6 +40,7 @@ namespace WindowsFormsApp1
 
                     repo.Inserir(admin);
 
+                    // Mostra instruções ao usuário para trocar a senha
                     MessageBox.Show(
                         "Primeiro acesso detectado.\n\n" +
                         "Usuário: admin\n" +

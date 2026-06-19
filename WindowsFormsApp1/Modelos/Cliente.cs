@@ -16,6 +16,7 @@ namespace WindowsFormsApp1.Modelos
 
         public override string ToString()
         {
+            // Mostra apenas o nome ao exibir em listas
             return Nome;
         }
     }

@@ -14,6 +14,7 @@ namespace WindowsFormsApp1.Modelos
 
         public decimal SubTotal()
         {
+            // Calcula subtotal multiplicando preço do serviço pela quantidade
             return Servico.Preco * Quantidade;
         }
     }

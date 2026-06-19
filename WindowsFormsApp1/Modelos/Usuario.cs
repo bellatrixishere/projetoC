@@ -16,6 +16,7 @@ namespace WindowsFormsApp1.Modelos
 
         public override string ToString()
         {
+            // Exibe nome e papel ao mostrar o usuário em listas
             return $"{Nome} ({Papel?.Nome})";
         }
     }

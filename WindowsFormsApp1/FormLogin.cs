@@ -50,16 +50,19 @@ namespace WindowsFormsApp1
                 return;
             }
 
+            // Tenta autenticar via serviço. O serviço retorna o usuário com papel se OK.
             Usuario usuario = _service.Autenticar(login, senha);
 
             if (usuario != null)
             {
+                // Login bem sucedido: guarda usuário e fecha o formulário com OK
                 UsuarioLogado = usuario;
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             else
             {
+                // Falha na autenticação: limpa senha e foca no login
                 MessageBox.Show("Usuário ou senha incorretos.");
                 txtSenha.Clear();
                 txtLogin.Focus();

@@ -22,11 +22,14 @@ namespace WindowsFormsApp1.Repositories
 
                 using (var cmd = new SQLiteCommand(sql, conexao))
                 {
+                    // Prepara dados do usuário. A senha é transformada em hash antes de salvar.
                     cmd.Parameters.AddWithValue("@Nome", usuario.Nome);
                     cmd.Parameters.AddWithValue("@Login", usuario.Login);
                     cmd.Parameters.AddWithValue("@SenhaHash",
                         BCrypt.Net.BCrypt.HashPassword(usuario.SenhaHash));
                     cmd.Parameters.AddWithValue("@PapelId", usuario.Papel.Id);
+
+                    // Executa inserção
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -58,10 +61,12 @@ namespace WindowsFormsApp1.Repositories
                     {
                         if (reader.Read())
                         {
+                            // Obtém hash do banco e compara com a senha fornecida
                             string hash = reader["SenhaHash"].ToString();
 
                             if (BCrypt.Net.BCrypt.Verify(senha, hash))
                             {
+                                // Senha válida: monta objeto Usuario com Papel
                                 return new Usuario
                                 {
                                     Id = System.Convert.ToInt32(reader["Id"]),

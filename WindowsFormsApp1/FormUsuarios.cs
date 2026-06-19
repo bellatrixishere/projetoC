@@ -73,10 +73,12 @@ namespace WindowsFormsApp1
                 return;
             }
 
+            // Monta objeto Usuario e solicita cadastro ao serviço
             Usuario novo = new Usuario
             {
                 Nome = txtNome.Text.Trim(),
                 Login = txtLogin.Text.Trim(),
+                // Aqui usa-se a propriedade SenhaHash temporariamente; o repositório fará o hash real
                 SenhaHash = txtSenha.Text,
                 Papel = (Papel)cboPapel.SelectedItem
             };
@@ -94,6 +96,7 @@ namespace WindowsFormsApp1
             }
             catch (Exception ex)
             {
+                // Exibe erro retornado pelo serviço (por exemplo: autorização ou login duplicado)
                 MessageBox.Show(ex.Message);
             }
         }
@@ -125,12 +128,14 @@ namespace WindowsFormsApp1
 
             try
             {
+                // Solicita exclusão ao serviço (verifica autorização internamente)
                 _service.Excluir(selecionado.Id, _usuarioLogado);
                 MessageBox.Show("Usuário excluído.");
                 CarregarUsuarios();
             }
             catch (Exception ex)
             {
+                // Mostra motivo da falha (por exemplo: sem permissão)
                 MessageBox.Show(ex.Message);
             }
         }

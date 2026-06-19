@@ -27,6 +27,7 @@ namespace WindowsFormsApp1.Repositories
 
                 using (var cmd = new SQLiteCommand(sql, conexao))
                 {
+                    // Insere o orçamento e obtém o id gerado (last_insert_rowid)
                     cmd.Parameters.AddWithValue(
                         "@ClienteId",
                         orcamento.Cliente.Id);
@@ -57,6 +58,7 @@ namespace WindowsFormsApp1.Repositories
                         VALUES
                         (@OrcamentoId, @ServicoId, @Quantidade)";
 
+                    // Para cada item, insere uma linha referenciando o id do orçamento
                     using (var cmd =
                         new SQLiteCommand(sqlItem, conexao))
                     {
@@ -138,6 +140,7 @@ namespace WindowsFormsApp1.Repositories
                                     reader["Contato"].ToString()
                             };
 
+                        // Carrega itens do orçamento usando a mesma conexão
                         orcamento.Itens =
                             CarregarItens(
                                 orcamento.Id,

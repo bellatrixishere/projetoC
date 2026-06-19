@@ -10,6 +10,7 @@ namespace WindowsFormsApp1.Services
 
         public Usuario Autenticar(string login, string senha)
         {
+            // Delegamos a validação para o repositório que lida com o hash
             return _repo.Validar(login, senha);
         }
 
@@ -19,6 +20,7 @@ namespace WindowsFormsApp1.Services
                 throw new System.Exception(
                     "Apenas Admin pode cadastrar usuários.");
 
+            // Se autorizado, salva o usuário (o repositório fará o hash da senha)
             _repo.Inserir(usuario);
         }
 
@@ -28,6 +30,7 @@ namespace WindowsFormsApp1.Services
                 throw new System.Exception(
                     "Apenas Admin pode listar usuários.");
 
+            // Somente Admin pode ver todos os usuários
             return _repo.Listar();
         }
 
@@ -37,6 +40,7 @@ namespace WindowsFormsApp1.Services
                 throw new System.Exception(
                     "Apenas Admin pode excluir usuários.");
 
+            // Delega exclusão ao repositório
             _repo.Excluir(id);
         }
 

@@ -14,6 +14,7 @@ namespace WindowsFormsApp1.Data
                 "OrcamentosPlatinum"
             );
 
+            // Se a pasta não existir, cria. Assim garantimos que podemos criar o arquivo do DB.
             if (!Directory.Exists(pasta))
                 Directory.CreateDirectory(pasta);
 
@@ -24,6 +25,7 @@ namespace WindowsFormsApp1.Data
         {
             string caminho = ObterCaminhoBanco();
             string stringConexao = $"Data Source={caminho};Version=3;";
+            // Retorna o objeto de conexão. Note: a conexão ainda não está aberta.
             return new SQLiteConnection(stringConexao);
         }
     }

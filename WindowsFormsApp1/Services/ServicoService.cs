@@ -10,6 +10,7 @@ namespace WindowsFormsApp1.Services
 
         public List<Servico> Listar()
         {
+            // Retorna todos os serviços do repositório
             return _repo.Listar();
         }
 
@@ -19,6 +20,7 @@ namespace WindowsFormsApp1.Services
                 throw new System.Exception(
                     "Visualizador não pode cadastrar serviços.");
 
+            // Persiste novo serviço
             _repo.Inserir(servico);
         }
 
@@ -28,6 +30,7 @@ namespace WindowsFormsApp1.Services
                 throw new System.Exception(
                     "Visualizador não pode editar serviços.");
 
+            // Atualiza serviço existente
             _repo.Atualizar(servico);
         }
 
@@ -37,6 +40,7 @@ namespace WindowsFormsApp1.Services
                 throw new System.Exception(
                     "Visualizador não pode excluir serviços.");
 
+            // Exclui o serviço
             _repo.Excluir(id);
         }
     }

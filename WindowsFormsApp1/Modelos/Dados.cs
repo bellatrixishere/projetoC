@@ -10,6 +10,8 @@ namespace WindowsFormsApp1.Modelos
     public static class Dados
     {
         // BindingList notifica automaticamente os controles ligados
+        // Apelido para consistência
+        public const string Apelido = "Dados";
         public static BindingList<Cliente> Clientes = new BindingList<Cliente>();
 
         public static BindingList<Servico> Servicos = new BindingList<Servico>()

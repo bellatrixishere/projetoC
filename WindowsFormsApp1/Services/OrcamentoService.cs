@@ -10,6 +10,7 @@ namespace WindowsFormsApp1.Services
 
         public List<Orcamento> Listar()
         {
+            // Retorna orçamentos do repositório
             return _repo.Listar();
         }
 
@@ -19,6 +20,7 @@ namespace WindowsFormsApp1.Services
                 throw new System.Exception(
                     "Visualizador não pode criar orçamentos.");
 
+            // Persiste novo orçamento (o repositório insere orçamento e itens)
             _repo.Inserir(orcamento);
         }
 
@@ -28,6 +30,7 @@ namespace WindowsFormsApp1.Services
                 throw new System.Exception(
                     "Visualizador não pode aprovar orçamentos.");
 
+            // Marca como aprovado, gera número de pedido e atualiza no banco
             orcamento.Status = "Aprovado";
             orcamento.NumeroPedido = Dados.ProximoPedido++;
             _repo.Atualizar(orcamento);
@@ -39,6 +42,7 @@ namespace WindowsFormsApp1.Services
                 throw new System.Exception(
                     "Visualizador não pode reprovar orçamentos.");
 
+            // Marca como rejeitado com o motivo e salva
             orcamento.Status = "Rejeitado";
             orcamento.MotivoRejeicao = motivo;
             _repo.Atualizar(orcamento);
@@ -50,6 +54,7 @@ namespace WindowsFormsApp1.Services
                 throw new System.Exception(
                     "Visualizador não pode excluir orçamentos.");
 
+            // Exclui orçamento (e itens) via repositório
             _repo.Excluir(id);
         }
     }

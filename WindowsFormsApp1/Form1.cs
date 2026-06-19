@@ -23,10 +23,12 @@ namespace WindowsFormsApp1
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            // Ao carregar o formulário, traz os dados do banco para as listas em memória
             CarregarClientes();
             CarregarServicos();
             CarregarOrcamentos();
 
+            // Atualiza os controles (ListBox / ComboBox) com os dados carregados
             AtualizarListas();
 
             cboMotivos.Items.Clear();
@@ -39,6 +41,7 @@ namespace WindowsFormsApp1
             if (cboMotivos.Items.Count > 0)
                 cboMotivos.SelectedIndex = 0;
 
+            // Ajusta botões e visibilidade conforme o papel do usuário logado
             AplicarPermissoes(); 
 
             ClienteRepository repo = new ClienteRepository();
@@ -57,7 +60,7 @@ namespace WindowsFormsApp1
          {
             ClienteRepository repo =
                 new ClienteRepository();
-
+            // Limpa cache e preenche a lista global de clientes a partir do repositório
             Dados.Clientes.Clear();
 
             foreach (Cliente cliente in repo.Listar())
@@ -116,7 +119,7 @@ namespace WindowsFormsApp1
             btnReprovar.Enabled = podeEditar;
             btnExcluirOrcamento.Enabled = podeEditar;
 
-            // Gerenciar usuários — só Admin vê
+            // O botão de gerenciar usuários só fica visível para Admin
             btnGerenciarUsuarios.Visible = isAdmin;
         }
 
@@ -156,6 +159,7 @@ namespace WindowsFormsApp1
                 return;
             }
 
+            // Monta o objeto Cliente e persiste via repositório
             Cliente cliente = new Cliente();
 
             cliente.Nome = txtNome.Text;
@@ -164,8 +168,9 @@ namespace WindowsFormsApp1
             ClienteRepository repo =
                new ClienteRepository();
 
-            repo.Inserir(cliente);
+            repo.Inserir(cliente); // insere no banco
 
+            // Recarrega os dados e limpa os campos de entrada
             CarregarClientes();
             AtualizarListas();
 
@@ -188,6 +193,7 @@ namespace WindowsFormsApp1
                 return;
             }
 
+            // Atualiza propriedades do cliente e persiste no banco
             cliente.Nome = txtNome.Text;
             cliente.Contato = txtContato.Text;
 
@@ -196,6 +202,7 @@ namespace WindowsFormsApp1
 
             repo.Atualizar(cliente);
 
+            // Recarrega para refletir mudanças
             CarregarClientes();
 
             AtualizarListas();
@@ -217,11 +224,13 @@ namespace WindowsFormsApp1
                 return;
             }
 
+            // Remove o cliente selecionado do banco
             ClienteRepository repo =
                 new ClienteRepository();
 
             repo.Excluir(cliente.Id);
 
+            // Atualiza listas após exclusão
             CarregarClientes();
 
             AtualizarListas();
@@ -240,6 +249,7 @@ namespace WindowsFormsApp1
             if (cliente == null)
                 return;
 
+            // Ao selecionar um cliente, carrega seus dados nos campos para edição
             txtNome.Text =
                 cliente.Nome;
 
@@ -272,6 +282,7 @@ namespace WindowsFormsApp1
                 return;
             }
 
+            // Cria o serviço e salva no banco
             Servico servico =
                 new Servico();
 
@@ -286,6 +297,7 @@ namespace WindowsFormsApp1
 
             repo.Inserir(servico);
 
+            // Recarrega e limpa campos
             CarregarServicos();
 
             AtualizarListas();
@@ -325,6 +337,7 @@ namespace WindowsFormsApp1
                 return;
             }
 
+            // Atualiza o serviço selecionado com novos valores
             servico.Nome =
                 txtNomeServico.Text;
 
@@ -360,6 +373,7 @@ namespace WindowsFormsApp1
                 return;
             }
 
+            // Remove serviço do banco
             ServicoRepository repo =
                 new ServicoRepository();
 
@@ -398,6 +412,7 @@ namespace WindowsFormsApp1
             item.Quantidade =
                 (int)numQuantidade.Value;
 
+            // Adiciona item à lista temporária do orçamento e mostra na ListBox
             itensOrcamento.Add(item);
 
             lstItens.Items.Add(
@@ -424,6 +439,7 @@ namespace WindowsFormsApp1
                 return;
             }
 
+            // Monta o orçamento com cliente e itens e salva no banco
             Orcamento o =
                 new Orcamento();
 
@@ -440,6 +456,7 @@ namespace WindowsFormsApp1
             repo.Inserir(o);
             Dados.Orcamentos.Add(o);
 
+            // Mostra o total e limpa a lista temporária
             MessageBox.Show(
                 $"Total: {o.Total():C}"
             );
@@ -462,6 +479,7 @@ namespace WindowsFormsApp1
             if (o == null)
                 return;
 
+            // Marca orçamento como aprovado, gera número de pedido e persiste
             o.Status = "Aprovado";
 
             o.NumeroPedido =
@@ -488,6 +506,7 @@ namespace WindowsFormsApp1
             if (o == null)
                 return;
 
+            // Marca orçamento como rejeitado com o motivo selecionado
             o.Status = "Rejeitado";
 
             o.MotivoRejeicao =
@@ -556,6 +575,7 @@ namespace WindowsFormsApp1
             if (confirmacao != DialogResult.Yes)
                 return;
 
+            // Exclui orçamento e seus itens do banco
             OrcamentoRepository repo = new OrcamentoRepository();
             repo.Excluir(o.Id);
 

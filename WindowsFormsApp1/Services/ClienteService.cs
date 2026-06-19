@@ -10,6 +10,7 @@ namespace WindowsFormsApp1.Services
 
         public List<Cliente> Listar()
         {
+            // Retorna lista de clientes do repositório
             return _repo.Listar();
         }
 
@@ -19,6 +20,7 @@ namespace WindowsFormsApp1.Services
                 throw new System.Exception(
                     "Visualizador não pode cadastrar clientes.");
 
+            // Verificada autorização acima; persiste cliente
             _repo.Inserir(cliente);
         }
 
@@ -28,6 +30,7 @@ namespace WindowsFormsApp1.Services
                 throw new System.Exception(
                     "Visualizador não pode editar clientes.");
 
+            // Atualiza cliente no banco
             _repo.Atualizar(cliente);
         }
 
@@ -37,6 +40,7 @@ namespace WindowsFormsApp1.Services
                 throw new System.Exception(
                     "Visualizador não pode excluir clientes.");
 
+            // Exclui cliente
             _repo.Excluir(id);
         }
     }

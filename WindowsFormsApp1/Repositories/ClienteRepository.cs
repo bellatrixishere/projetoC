@@ -22,9 +22,11 @@ namespace WindowsFormsApp1.Repositories
 
                 using (var cmd = new SQLiteCommand(sql, conexao))
                 {
+                    // Preenche parâmetros da query com valores do objeto cliente
                     cmd.Parameters.AddWithValue("@Nome", cliente.Nome);
                     cmd.Parameters.AddWithValue("@Contato", cliente.Contato);
 
+                    // Executa INSERT no banco
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -73,6 +75,7 @@ namespace WindowsFormsApp1.Repositories
 
                 using (var cmd = new SQLiteCommand(sql, conexao))
                 {
+                    // Define parâmetros e executa UPDATE para salvar alterações
                     cmd.Parameters.AddWithValue("@Id", cliente.Id);
                     cmd.Parameters.AddWithValue("@Nome", cliente.Nome);
                     cmd.Parameters.AddWithValue("@Contato", cliente.Contato);
@@ -92,6 +95,7 @@ namespace WindowsFormsApp1.Repositories
 
                 using (var cmd = new SQLiteCommand(sql, conexao))
                 {
+                    // Executa DELETE para remover cliente pelo Id
                     cmd.Parameters.AddWithValue("@Id", id);
 
                     cmd.ExecuteNonQuery();

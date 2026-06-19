@@ -22,6 +22,7 @@ namespace WindowsFormsApp1.Repositories
 
                 using (var cmd = new SQLiteCommand(sql, conexao))
                 {
+                    // Preenche parâmetros e executa INSERT para criar novo serviço
                     cmd.Parameters.AddWithValue("@Nome", servico.Nome);
                     cmd.Parameters.AddWithValue("@Preco", servico.Preco);
 
@@ -73,6 +74,7 @@ namespace WindowsFormsApp1.Repositories
 
                 using (var cmd = new SQLiteCommand(sql, conexao))
                 {
+                    // Atualiza serviço no banco com os novos valores
                     cmd.Parameters.AddWithValue("@Id", servico.Id);
                     cmd.Parameters.AddWithValue("@Nome", servico.Nome);
                     cmd.Parameters.AddWithValue("@Preco", servico.Preco);
@@ -92,6 +94,7 @@ namespace WindowsFormsApp1.Repositories
 
                 using (var cmd = new SQLiteCommand(sql, conexao))
                 {
+                    // Deleta serviço pelo id
                     cmd.Parameters.AddWithValue("@Id", id);
 
                     cmd.ExecuteNonQuery();

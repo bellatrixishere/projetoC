@@ -18,6 +18,7 @@ namespace WindowsFormsApp1.Modelos
 
         public decimal Total()
         {
+            // Soma os subtotais de todos os itens para obter o total do orçamento
             return Itens.Sum(i => i.SubTotal());
         }
 

@@ -12,10 +12,12 @@ namespace WindowsFormsApp1.Data
     {
         public static void Inicializar()
         {
+            // Abre a conexão com o arquivo de banco SQLite
             using (var conexao = Conexao.ObterConexao())
             {
-                conexao.Open();
+                conexao.Open(); // garante que o arquivo e o DB estão prontos
 
+                // Cria tabela Clientes se não existir
                 new SQLiteCommand(@"
                     CREATE TABLE IF NOT EXISTS Clientes
                     (
@@ -70,7 +72,8 @@ namespace WindowsFormsApp1.Data
                         FOREIGN KEY (PapelId) REFERENCES Papeis(Id)
                     );", conexao).ExecuteNonQuery();
 
-                // Insere os 3 papéis fixos se não existirem
+                // Insere os papéis iniciais (Admin, Operador, Visualizador) — evita duplicação com OR IGNORE
+                // Isso garante que sempre haja papeis básicos disponíveis.
                 new SQLiteCommand(@"
                     INSERT OR IGNORE INTO Papeis (Nome)
                     VALUES ('Admin'), ('Operador'), ('Visualizador');
