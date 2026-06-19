@@ -5,6 +5,7 @@ namespace WindowsFormsApp1.Modelos
 {
     public class Orcamento
     {
+        public int Id { get; set; }
         public Cliente Cliente { get; set; }
 
         public List<ItemOrcamento> Itens { get; set; } = new List<ItemOrcamento>();

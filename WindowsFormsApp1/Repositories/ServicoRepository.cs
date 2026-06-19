@@ -6,76 +6,76 @@ using WindowsFormsApp1.Modelos;
 
 namespace WindowsFormsApp1.Repositories
 {
-    public class ClienteRepository
+    public class ServicoRepository
     {
-        public void Inserir(Cliente cliente)
+        public void Inserir(Servico servico)
         {
             using (var conexao = Conexao.ObterConexao())
             {
                 conexao.Open();
 
                 string sql = @"
-                    INSERT INTO Clientes
-                    (Nome, Contato)
+                    INSERT INTO Servicos
+                    (Nome, Preco)
                     VALUES
-                    (@Nome, @Contato)";
+                    (@Nome, @Preco)";
 
                 using (var cmd = new SQLiteCommand(sql, conexao))
                 {
-                    cmd.Parameters.AddWithValue("@Nome", cliente.Nome);
-                    cmd.Parameters.AddWithValue("@Contato", cliente.Contato);
+                    cmd.Parameters.AddWithValue("@Nome", servico.Nome);
+                    cmd.Parameters.AddWithValue("@Preco", servico.Preco);
 
                     cmd.ExecuteNonQuery();
                 }
             }
         }
 
-        public List<Cliente> Listar()
+        public List<Servico> Listar()
         {
-            List<Cliente> clientes = new List<Cliente>();
+            List<Servico> servicos = new List<Servico>();
 
             using (var conexao = Conexao.ObterConexao())
             {
                 conexao.Open();
 
-                string sql = "SELECT * FROM Clientes";
+                string sql = "SELECT * FROM Servicos";
 
                 using (var cmd = new SQLiteCommand(sql, conexao))
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        Cliente cliente = new Cliente();
+                        Servico servico = new Servico();
 
-                        cliente.Id = Convert.ToInt32(reader["Id"]);
-                        cliente.Nome = reader["Nome"].ToString();
-                        cliente.Contato = reader["Contato"].ToString();
+                        servico.Id = Convert.ToInt32(reader["Id"]);
+                        servico.Nome = reader["Nome"].ToString();
+                        servico.Preco = Convert.ToDecimal(reader["Preco"]);
 
-                        clientes.Add(cliente);
+                        servicos.Add(servico);
                     }
                 }
             }
 
-            return clientes;
+            return servicos;
         }
 
-        public void Atualizar(Cliente cliente)
+        public void Atualizar(Servico servico)
         {
             using (var conexao = Conexao.ObterConexao())
             {
                 conexao.Open();
 
                 string sql = @"
-            UPDATE Clientes
-            SET Nome = @Nome,
-                Contato = @Contato
-            WHERE Id = @Id";
+                    UPDATE Servicos
+                    SET Nome = @Nome,
+                        Preco = @Preco
+                    WHERE Id = @Id";
 
                 using (var cmd = new SQLiteCommand(sql, conexao))
                 {
-                    cmd.Parameters.AddWithValue("@Id", cliente.Id);
-                    cmd.Parameters.AddWithValue("@Nome", cliente.Nome);
-                    cmd.Parameters.AddWithValue("@Contato", cliente.Contato);
+                    cmd.Parameters.AddWithValue("@Id", servico.Id);
+                    cmd.Parameters.AddWithValue("@Nome", servico.Nome);
+                    cmd.Parameters.AddWithValue("@Preco", servico.Preco);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -88,7 +88,7 @@ namespace WindowsFormsApp1.Repositories
             {
                 conexao.Open();
 
-                string sql = "DELETE FROM Clientes WHERE Id = @Id";
+                string sql = "DELETE FROM Servicos WHERE Id = @Id";
 
                 using (var cmd = new SQLiteCommand(sql, conexao))
                 {

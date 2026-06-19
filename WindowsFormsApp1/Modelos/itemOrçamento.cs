@@ -8,6 +8,7 @@ namespace WindowsFormsApp1.Modelos
 {
     public class ItemOrcamento
     {
+        public int Id { get; set; }
         public Servico Servico { get; set; }
         public int Quantidade { get; set; }
 

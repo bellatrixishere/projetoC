@@ -11,6 +11,8 @@ namespace WindowsFormsApp1
         private List<ItemOrcamento> itensOrcamento =
             new List<ItemOrcamento>();
 
+
+
         public Form1()
         {
             InitializeComponent();
@@ -18,6 +20,10 @@ namespace WindowsFormsApp1
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            CarregarClientes();
+            CarregarServicos();
+            CarregarOrcamentos();
+
             AtualizarListas();
 
             cboMotivos.Items.Clear();
@@ -42,6 +48,45 @@ namespace WindowsFormsApp1
             AtualizarListas();
         }
 
+            private void CarregarClientes()
+         {
+            ClienteRepository repo =
+                new ClienteRepository();
+
+            Dados.Clientes.Clear();
+
+            foreach (Cliente cliente in repo.Listar())
+            {
+                Dados.Clientes.Add(cliente);
+            }
+         }
+
+        private void CarregarServicos()
+        {
+            ServicoRepository repo =
+                new ServicoRepository();
+
+            Dados.Servicos.Clear();
+
+            foreach (Servico servico in repo.Listar())
+            {
+                Dados.Servicos.Add(servico);
+            }
+        }
+
+        private void CarregarOrcamentos()
+        {
+            OrcamentoRepository repo =
+                new OrcamentoRepository();
+
+            Dados.Orcamentos.Clear();
+
+            foreach (Orcamento orcamento in repo.Listar())
+            {
+                Dados.Orcamentos.Add(orcamento);
+            }
+        }
+
         private void AtualizarListas()
         {
             lstClientes.DataSource = null;
@@ -59,6 +104,8 @@ namespace WindowsFormsApp1
             cboServico.DataSource = null;
             cboServico.DataSource = Dados.Servicos;
         }
+
+
 
         //---------------------------------
         // CLIENTE
@@ -86,6 +133,7 @@ namespace WindowsFormsApp1
 
             repo.Inserir(cliente);
 
+            CarregarClientes();
             AtualizarListas();
 
             txtNome.Clear();
@@ -99,7 +147,7 @@ namespace WindowsFormsApp1
             EventArgs e)
         {
             Cliente cliente =
-                lstClientes.SelectedItem as Cliente;
+                   lstClientes.SelectedItem as Cliente;
 
             if (cliente == null)
             {
@@ -110,14 +158,19 @@ namespace WindowsFormsApp1
             cliente.Nome = txtNome.Text;
             cliente.Contato = txtContato.Text;
 
+            ClienteRepository repo =
+                new ClienteRepository();
+
+            repo.Atualizar(cliente);
+
+            CarregarClientes();
+
             AtualizarListas();
 
-            txtNome.Clear();
-            txtContato.Clear();
-
-            MessageBox.Show("Cliente atualizado.");
+            _ = MessageBox.Show("Cliente atualizado.");
         }
 
+        //EXCLUIR O CRIA
         private void Excluir_Click(
             object sender,
             EventArgs e)
@@ -131,14 +184,17 @@ namespace WindowsFormsApp1
                 return;
             }
 
-            Dados.Clientes.Remove(cliente);
+            ClienteRepository repo =
+                new ClienteRepository();
+
+            repo.Excluir(cliente.Id);
+
+            CarregarClientes();
 
             AtualizarListas();
 
-            txtNome.Clear();
-            txtContato.Clear();
-
             MessageBox.Show("Cliente removido.");
+        
         }
 
         private void lstClientes_SelectedIndexChanged(
@@ -192,8 +248,12 @@ namespace WindowsFormsApp1
             servico.Preco =
                 preco;
 
-            Dados.Servicos.Add(
-                servico);
+            ServicoRepository repo =
+                new ServicoRepository();
+
+            repo.Inserir(servico);
+
+            CarregarServicos();
 
             AtualizarListas();
 
@@ -210,8 +270,7 @@ namespace WindowsFormsApp1
             EventArgs e)
         {
             Servico servico =
-                lstServicos.SelectedItem
-                as Servico;
+       lstServicos.SelectedItem as Servico;
 
             if (servico == null)
             {
@@ -223,11 +282,9 @@ namespace WindowsFormsApp1
 
             decimal preco;
 
-            if (
-                !decimal.TryParse(
+            if (!decimal.TryParse(
                     txtPreco.Text,
-                    out preco)
-            )
+                    out preco))
             {
                 MessageBox.Show(
                     "Preço inválido."
@@ -241,6 +298,13 @@ namespace WindowsFormsApp1
             servico.Preco =
                 preco;
 
+            ServicoRepository repo =
+                new ServicoRepository();
+
+            repo.Atualizar(servico);
+
+            CarregarServicos();
+
             AtualizarListas();
 
             MessageBox.Show(
@@ -253,41 +317,28 @@ namespace WindowsFormsApp1
             EventArgs e)
         {
             Servico servico =
-                lstServicos.SelectedItem
-                as Servico;
+                  lstServicos.SelectedItem as Servico;
 
             if (servico == null)
+            {
+                MessageBox.Show(
+                    "Selecione um serviço."
+                );
                 return;
+            }
 
-            Dados.Servicos.Remove(
-                servico);
+            ServicoRepository repo =
+                new ServicoRepository();
+
+            repo.Excluir(servico.Id);
+
+            CarregarServicos();
 
             AtualizarListas();
-
-            txtNomeServico.Clear();
-            txtPreco.Clear();
 
             MessageBox.Show(
                 "Serviço removido."
             );
-        }
-
-        private void listBox1_SelectedIndexChanged_1(
-            object sender,
-            EventArgs e)
-        {
-            Servico servico =
-                lstServicos.SelectedItem
-                as Servico;
-
-            if (servico == null)
-                return;
-
-            txtNomeServico.Text =
-                servico.Nome;
-
-            txtPreco.Text =
-                servico.Preco.ToString();
         }
 
         //---------------------------------
@@ -350,6 +401,10 @@ namespace WindowsFormsApp1
                 new List<ItemOrcamento>(
                     itensOrcamento);
 
+            OrcamentoRepository repo =
+                new OrcamentoRepository();
+
+            repo.Inserir(o);
             Dados.Orcamentos.Add(o);
 
             MessageBox.Show(
@@ -368,17 +423,23 @@ namespace WindowsFormsApp1
             EventArgs e)
         {
             Orcamento o =
-                lstOrcamentos.SelectedItem
-                as Orcamento;
+        lstOrcamentos.SelectedItem
+        as Orcamento;
 
             if (o == null)
                 return;
 
-            o.Status =
-                "Aprovado";
+            o.Status = "Aprovado";
 
             o.NumeroPedido =
                 Dados.ProximoPedido++;
+
+            OrcamentoRepository repo =
+                new OrcamentoRepository();
+
+            repo.Atualizar(o);
+
+            CarregarOrcamentos();
 
             AtualizarListas();
         }
@@ -388,17 +449,23 @@ namespace WindowsFormsApp1
             EventArgs e)
         {
             Orcamento o =
-                lstOrcamentos.SelectedItem
-                as Orcamento;
+            lstOrcamentos.SelectedItem
+             as Orcamento;
 
             if (o == null)
                 return;
 
-            o.Status =
-                "Rejeitado";
+            o.Status = "Rejeitado";
 
             o.MotivoRejeicao =
                 cboMotivos.Text;
+
+            OrcamentoRepository repo =
+                new OrcamentoRepository();
+
+            repo.Atualizar(o);
+
+            CarregarOrcamentos();
 
             AtualizarListas();
         }
@@ -435,6 +502,34 @@ namespace WindowsFormsApp1
             object sender,
             EventArgs e)
         {
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            Orcamento o = lstOrcamentos.SelectedItem as Orcamento;
+
+            if (o == null)
+            {
+                MessageBox.Show("Selecione um orçamento.");
+                return;
+            }
+
+            DialogResult confirmacao = MessageBox.Show(
+                "Tem certeza que deseja excluir este orçamento?",
+                "Confirmar exclusão",
+                MessageBoxButtons.YesNo
+            );
+
+            if (confirmacao != DialogResult.Yes)
+                return;
+
+            OrcamentoRepository repo = new OrcamentoRepository();
+            repo.Excluir(o.Id);
+
+            CarregarOrcamentos();
+            AtualizarListas();
+
+            MessageBox.Show("Orçamento excluído.");
         }
     }
 }
