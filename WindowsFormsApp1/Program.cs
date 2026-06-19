@@ -12,46 +12,56 @@ namespace WindowsFormsApp1
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
-            Banco.Inicializar();
-
-            // Cria admin padrão se não existir nenhum usuário
-            UsuarioService service = new UsuarioService();
-
-            if (!service.ExisteAlgumUsuario())
+            try
             {
-                UsuarioRepository repo = new UsuarioRepository();
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
 
-                // Busca o papel Admin (Id=1)
-                Papel papelAdmin = new Papel { Id = 1, Nome = "Admin" };
+                Banco.Inicializar();
 
-                Usuario admin = new Usuario
+                UsuarioService service = new UsuarioService();
+
+                if (!service.ExisteAlgumUsuario())
                 {
-                    Nome = "Administrador",
-                    Login = "admin",
-                    SenhaHash = "1234",
-                    Papel = papelAdmin
-                };
+                    UsuarioRepository repo = new UsuarioRepository();
 
-                repo.Inserir(admin);
+                    Papel papelAdmin = new Papel { Id = 1, Nome = "Admin" };
 
-                MessageBox.Show(
-                    "Primeiro acesso detectado.\n\n" +
-                    "Usuário: admin\n" +
-                    "Senha: 1234\n\n" +
-                    "Troque a senha após entrar.",
-                    "Bem-vindo"
-                );
+                    Usuario admin = new Usuario
+                    {
+                        Nome = "Administrador",
+                        Login = "admin",
+                        SenhaHash = "1234",
+                        Papel = papelAdmin
+                    };
+
+                    repo.Inserir(admin);
+
+                    MessageBox.Show(
+                        "Primeiro acesso detectado.\n\n" +
+                        "Usuário: admin\n" +
+                        "Senha: 1234\n\n" +
+                        "Troque a senha após entrar.",
+                        "Bem-vindo"
+                    );
+                }
+
+                FormLogin login = new FormLogin();
+
+                if (login.ShowDialog() == DialogResult.OK)
+                {
+                    Application.Run(new Form1(login.UsuarioLogado));
+                }
             }
-
-            // Abre o login
-            FormLogin login = new FormLogin();
-
-            if (login.ShowDialog() == DialogResult.OK)
+            catch (Exception ex)
             {
-                Application.Run(new Form1(login.UsuarioLogado));
+                MessageBox.Show(
+                    "Erro ao iniciar o sistema:\n\n" + ex.Message +
+                    "\n\n" + ex.StackTrace,
+                    "Erro",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
             }
         }
     }
